@@ -2,4 +2,21 @@ let hogwarts = {
     wizards : []
 }
 
-export {hogwarts}
+let search = function(name){
+    if(typeof name !== "string")
+        return "INVALID_INPUT"
+
+    if(name.trim() === ""){
+        return "INVALID_INPUT"
+    }
+    wizFind = hogwarts.wizards.find((obj)=>{
+        let objname = obj.name.toLowerCase()
+        let argname = name.toLowerCase()
+        return objname.includes(argname);
+    })
+    return wizFind
+}
+
+
+
+export {hogwarts,search}
