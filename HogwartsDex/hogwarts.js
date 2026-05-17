@@ -9,9 +9,9 @@ let search = function(name){
     if(name.trim() === ""){
         return "INVALID_INPUT"
     }
-    wizFind = hogwarts.wizards.find((obj)=>{
+    let argname = name.toLowerCase()
+    let wizFind = hogwarts.wizards.find((obj)=>{
         let objname = obj.name.toLowerCase()
-        let argname = name.toLowerCase()
         return objname.includes(argname);
     })
     return wizFind
