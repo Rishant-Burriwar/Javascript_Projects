@@ -1,8 +1,10 @@
 import {characters} from "./api.js";
 import {Wizard} from "./wizardsClass.js"
-import {hogwarts,search,getByHouse} from "./hogwarts.js"
+import {hogwarts,search,getByHouse,stats} from "./hogwarts.js"
 
 async function main(){
+
+console.log("\n----WELCOME TO HOGWARTS----\n");
 
     try{
         let data = await characters();
@@ -29,11 +31,12 @@ async function main(){
         let wizByHouse = getByHouse("ravenclaw")
         console.log(wizByHouse);
 
+// STATISTICS OF HOGWARTS [TOTAL,ALIVE,DEAD]
+        let statistics = stats()
+        console.log("TOTAL: ",statistics.Total)
+        console.log("ALIVE: ",statistics.Alive)
+        console.log("DEAD: ",statistics.Dead)
 
-
-
-
-        
     }
     catch(err){
         console.log(err)

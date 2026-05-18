@@ -40,4 +40,22 @@ let getByHouse = function(house){
     }
 }
 
-export {hogwarts,search,getByHouse}
+let stats = function(){
+    let statistics = {
+        Total:0,
+        Alive:0,
+        Dead:0
+    }
+    for(let wizobj of hogwarts.wizards){
+        if(wizobj.alive){
+            statistics.Alive+=1
+        }
+        else{
+            statistics.Dead+=1
+        }
+    }
+    statistics.Total = hogwarts.wizards.length
+    return statistics;
+}
+
+export {hogwarts,search,getByHouse,stats}
