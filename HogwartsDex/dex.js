@@ -19,7 +19,7 @@ console.log("\n----WELCOME TO HOGWARTS----\n");
         })
 
 // FINDING A WIZARD
-        let wizFind = search("hermione")
+        let wizFind = search("severus")
         if(wizFind === undefined){
             console.log("Wizard not Found");
         }

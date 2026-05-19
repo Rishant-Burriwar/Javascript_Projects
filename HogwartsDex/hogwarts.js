@@ -42,7 +42,7 @@ let getByHouse = function(house){
 
 let stats = function(){
     let statistics = {
-        Total:0,
+        Total:hogwarts.wizards.length,
         Alive:0,
         Dead:0
     }
@@ -54,7 +54,6 @@ let stats = function(){
             statistics.Dead+=1
         }
     }
-    statistics.Total = hogwarts.wizards.length
     return statistics;
 }
 
