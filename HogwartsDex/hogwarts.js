@@ -57,4 +57,28 @@ let stats = function(){
     return statistics;
 }
 
-export {hogwarts,search,getByHouse,stats}
+let startMatch =function(name1,name2){
+    let res1 =search(name1);
+    let res2 = search(name2);
+    let validation = function(name1,name2){
+        if(res1 === "INVALID INPUT" || res2 === "INVALID INPUT")
+            return false;
+        if(res1 === undefined || res2 === undefined)
+            return false;
+        if(res1.alive && res2.alive){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    if(validation()){
+        let gameObj =[res1,res2]
+        return gameObj;
+    }
+    else{
+        return "INVALID INPUT"
+    }
+}
+
+export {hogwarts,search,getByHouse,stats,startMatch}

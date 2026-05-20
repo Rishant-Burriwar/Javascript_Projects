@@ -1,18 +1,20 @@
+import { hogwarts } from "./hogwarts.js";
+
 const validSpells = {
         attack : [
-            {name:"stupefy",maxDamage:20},
-            {name:"Sectumsempra", maxDamage:35},
-            {name:"Incendio", maxDamage:25}
+            {name:"stupefy",type:"attack",maxDamage:20},
+            {name:"Sectumsempra",type:"attack", maxDamage:35},
+            {name:"Incendio",type:"attack", maxDamage:25}
         ],
         heal : [
-            {name:"Episkey", maxHeal:15},
-            {name:"Vulnera Sanentur", maxHeal:35},
-            {name:"Rennervate", maxHeal:20}
+            {name:"Episkey",type:"health", maxHeal:15},
+            {name:"Vulnera Sanentur",type:"health", maxHeal:35},
+            {name:"Rennervate",type:"health", maxHeal:20}
         ],
-        denense: [
-            {name:"Protego", maxShield:15},
-            {name:"Protego Maxima", maxShield:35},
-            {name:"Fianto Duri", maxShield:25}
+        defense: [
+            {name:"Protego",type:"defense", maxShield:15},
+            {name:"Protego Maxima", type:"defense",maxShield:35},
+            {name:"Fianto Duri",type:"defense", maxShield:25}
         ]
     }
 
@@ -24,4 +26,9 @@ let spells = function(){
     return spellList;
 }
 
-export{spells};
+let onlySpellName = function(wizobj){
+    let spellNames = wizobj.spell.map((obj)=>obj.name)
+    return spellNames;
+}
+
+export{spells,onlySpellName};

@@ -1,4 +1,5 @@
 import { spells } from "./spells.js";
+import { startMatch } from "./hogwarts.js";
 
 let randPower = function(range){
     let power = Math.floor(Math.random()*(range-10) +10);
@@ -19,6 +20,14 @@ class Wizard{
         }
         this.power = randPower(30);
         this.spell = spells();
+    }
+
+    attack(spellname,defender){
+        if(spellname !== this.spell[0].name)
+            return "CHOSE WRONG SPELL"
+        let attPow = this.power/5 + (randPower(this.spell[0].maxDamage));
+        defender.health -= attPow;
+        return `${this.name} used ${this.spell[0].name}\n${defender.name} Lost ${attPow} health points`
     }
 }
 
