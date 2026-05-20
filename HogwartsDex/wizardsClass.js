@@ -23,7 +23,7 @@ class Wizard{
     }
 
     attack(spellname,defender){
-        if(spellname !== this.spell[0].name)
+        if(this.spell.find((obj)=>obj.name===spellname).type !=="attack")
             return "CHOSE WRONG SPELL"
         let attPow = this.power/5 + (randPower(this.spell[0].maxDamage));
         defender.health -= attPow;
