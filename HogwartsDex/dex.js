@@ -39,16 +39,20 @@ console.log("\n----WELCOME TO HOGWARTS----\n");
         console.log("ALIVE: ",statistics.Alive)
         console.log("DEAD: ",statistics.Dead)
 
-let x =startMatch("harry","severus")
-console.log(`${x[0].name} spells are`,onlySpellName(x[0]))
-console.log(`${x[1].name} spells are`,onlySpellName(x[1]))
-console.log(x[0].attack(x[0].spell[0].name,x[1]));
-console.log(x[1].heal(x[1].spell[1].name))
-console.log(x[1].defense(x[1].spell[2].name))
-console.log(x[1].defense(x[1].spell[2].name))
-console.log(x[1]);
-console.log(x[0].attack(x[0].spell[0].name,x[1]));
-console.log(x[1]);
+let x =startMatch("harry","ron")
+while(x[0].alive && x[1].alive){
+
+    console.log(
+        x[0].attack(x[0].spell[0].name,x[1])
+    );
+
+    if(!x[1].alive)
+        break;
+
+    console.log(
+        x[1].attack(x[1].spell[0].name,x[0])
+    );
+}
 
     }
     catch(err){

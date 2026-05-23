@@ -3,18 +3,18 @@ import { hogwarts } from "./hogwarts.js";
 const validSpells = {
         attack : [
             {name:"stupefy",type:"attack",maxDamage:20},
-            {name:"Sectumsempra",type:"attack", maxDamage:35},
-            {name:"Incendio",type:"attack", maxDamage:25}
+            {name:"sectumsempra",type:"attack", maxDamage:35},
+            {name:"incendio",type:"attack", maxDamage:25}
         ],
         heal : [
-            {name:"Episkey",type:"health", maxHeal:15},
-            {name:"Vulnera Sanentur",type:"health", maxHeal:35},
-            {name:"Rennervate",type:"health", maxHeal:20}
+            {name:"episkey",type:"health", maxHeal:15},
+            {name:"vulnera sanentur",type:"health", maxHeal:35},
+            {name:"rennervate",type:"health", maxHeal:20}
         ],
         defense: [
-            {name:"Protego",type:"defense", maxShield:15},
-            {name:"Protego Maxima", type:"defense",maxShield:35},
-            {name:"Fianto Duri",type:"defense", maxShield:25}
+            {name:"protego",type:"defense", maxShield:15},
+            {name:"protego paxima", type:"defense",maxShield:35},
+            {name:"fianto duri",type:"defense", maxShield:25}
         ]
     }
 
