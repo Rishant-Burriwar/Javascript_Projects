@@ -26,61 +26,61 @@ class Wizard{
         }
     }
 
-    attack(spellname,defender){
-        let attackspell =this.spell.find((obj)=>obj.name===spellname)
-        if(attackspell===undefined)
-            return "INVALID INPUT"
-        if(attackspell.type !=="attack")
-            return "CHOSE WRONG SPELL TYPE"
-
-        let attPow = Math.round(this.power/5 + (randPower(attackspell.maxDamage)))
-
-        if(defender.def.status === true){
-            let defPow = defender.def.power
-            if(defPow < attPow){
+    takeDamage(attacker,attPow,defPow,attackspell){
+        if(this.def.status){
+             if(defPow < attPow){
                 attPow -= defPow;
                 defPow = 0 
-                defender.def.power = defPow;
-                defender.def.status =false;
-                defender.health -= attPow;
-                if(!defender.healthCheck()){
-                    return `${defender.name} is Dead`
+                this.def.power = defPow;
+                this.def.status =false;
+                this.health -= attPow;
+                if(!this.healthCheck()){
+                    return {success:false,error:"WIZARD_DEAD"}
                 }
-                return `${this.name} used ${attackspell.name}\n${defender.name} Lost ${attPow} health points and Shield is Deactivated`
+                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,shieldBroke:true}
             }
-            else if(defPow > attPow){
+            else if(defPow>attPow){
                 defPow -= attPow
                 attPow =0
-                defender.def.power = defPow;
-                return `${this.name} used ${attackspell.name}\n${defender.name} Lost ${attPow} health points Beacuse of Shield`
+                this.def.power = defPow;
+                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroke:false}
             }
             else{
                 attPow = 0;
-                defender.def.power = 0;
-                defender.def.status =false;
-                return `${this.name} used ${attackspell.name}\n${defender.name} Lost ${attPow} health points Beacuse of Shield`
+                this.def.power = 0;
+                this.def.status =false;
+                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroke:true}
             }
         }
-
-        defender.health -= attPow;
-
-        if(!defender.healthCheck()){
-            return `${defender.name} is Dead`
+        this.health -= attPow;
+        if(!this.healthCheck()){
+            return {success:false,error:"WIZARD_DEAD"}
         }
+        return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow}
+    }
 
-        return `${this.name} used ${attackspell.name}\n${defender.name} Lost ${attPow} health points`
+    attack(spellname,defender){
+        let attackspell =this.spell.find((obj)=>obj.name===spellname)
+        if(attackspell===undefined)
+            return {success:false,error:"SPELL_NOT_FOUND"}
+        if(attackspell.type !=="attack")
+            return {success:false,error:"INVALID_ATTACK_SPELL"}
+        
+        let attPow = Math.round(this.power/5 + (randPower(attackspell.maxDamage)))
+        let defPow = defender.def.power;
+        return defender.takeDamage(this,attPow,defPow,attackspell);
     }
 
     heal(spellname){
         if(!this.healthCheck()){
-            return `${this.name} is Dead`
+            return {success:false,error:"WIZARD_DEAD"}
         }
 
         let healthspell =this.spell.find((obj)=>obj.name===spellname)
         if(healthspell===undefined)
-            return "INVALID INPUT"
+            return {success:false,error:"SPELL_NOT_FOUND"}
         if(healthspell.type !=="health")
-            return "CHOSE WRONG SPELL TYPE"
+            return {success:false,error:"INVALID_HEAL_SPELL"}
 
         let healPow = Math.round(this.power/5 + (randPower(healthspell.maxHeal)));
 
@@ -89,7 +89,7 @@ class Wizard{
         if(this.health >100)
             this.health = 100;
 
-        return `${this.name} used ${healthspell.name} to increase health points by ${healPow}`
+        return {success:true,type:"heal",wizard:this.name,spell:healthspell.name,healAmount:healPow,currentHealth:this.health}
     }
 
     defense(spellname){
