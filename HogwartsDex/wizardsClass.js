@@ -26,6 +26,31 @@ class Wizard{
         }
     }
 
+    chooseAction(defender){
+        if(this.health < 30){
+            return {
+                action : "heal",
+                spell : this.spell[1].name,
+                defender : defender
+            }
+        }
+
+        else if(!this.def.status){
+            return {
+                action :"defense",
+                spell : this.spell[2].name,
+                defender : defender
+            }
+        }
+        else{
+            return {
+                action : "attack",
+                spell : this.spell[0].name,
+                defender : defender
+            }
+        }
+    }
+
     performAction(action,defender,spellname){
         switch(action){
             case "attack" :{
@@ -53,21 +78,21 @@ class Wizard{
                 if(!this.healthCheck()){
                     return {success:false,error:"WIZARD_DEAD"}
                 }
-                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,shieldBroke:true}
+                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,shieldBroken:true}
             }
 
             else if(defPow>attPow){
                 defPow -= attPow
                 attPow =0
                 this.def.power = defPow;
-                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroke:false}
+                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBlocked:true}
             }
 
             else{
                 attPow = 0;
                 this.def.power = 0;
                 this.def.status =false;
-                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroke:true}
+                return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroken:true}
             }
         }
         

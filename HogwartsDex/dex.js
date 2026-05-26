@@ -1,6 +1,7 @@
 import {characters} from "./api.js";
 import {Wizard} from "./wizardsClass.js"
-import {hogwarts,search,getByHouse,stats,startMatch,displayResult} from "./hogwarts.js"
+import {hogwarts,search,getByHouse,stats} from "./hogwarts.js"
+import { displayResult,startMatch } from "./duel.js";
 import { onlySpellName } from "./spells.js";
 import data from "./data.json" with {type : "json"}
 
@@ -41,14 +42,15 @@ console.log("\n----WELCOME TO HOGWARTS----\n");
 
 let x =startMatch("harry","ron")
 while(x[0].alive && x[1].alive){
-    let result1 = x[0].performAction("defense",x[1],x[0].spell[2].name)
-    displayResult(result1);
 
+    let move1 = x[0].chooseAction(x[1]);
+    let result1 = x[0].performAction(move1.action,move1.defender,move1.spell)
+    displayResult(result1);
     if(!x[1].alive){
         break;
     }
-
-    let result2 = x[1].performAction("attack",x[0],x[1].spell[0].name)
+    let move2 = x[1].chooseAction(x[0]);
+    let result2 = x[1].performAction(move2.action,move2.defender,move2.spell)
     displayResult(result2);
 }
 
