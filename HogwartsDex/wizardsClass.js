@@ -1,5 +1,5 @@
 import { spells } from "./spells.js";
-import { startMatch } from "./hogwarts.js";
+
 
 let randPower = function(range){
     let power = Math.floor(Math.random()*(range-10) +10);
@@ -26,8 +26,24 @@ class Wizard{
         }
     }
 
-    takeDamage(attacker,attPow,defPow,attackspell){
+    performAction(action,defender,spellname){
+        switch(action){
+            case "attack" :{
+                return this.attack(spellname,defender);
+            }
+            case "heal" :{
+                return this.heal(spellname);
+            }
+            case "defense":{
+                return this.defense(spellname);
+            }
+        }
+    }
+
+    takeDamage(attacker,attPow,attackspell){
+
         if(this.def.status){
+            let defPow = this.def.power;
              if(defPow < attPow){
                 attPow -= defPow;
                 defPow = 0 
@@ -39,12 +55,14 @@ class Wizard{
                 }
                 return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,shieldBroke:true}
             }
+
             else if(defPow>attPow){
                 defPow -= attPow
                 attPow =0
                 this.def.power = defPow;
                 return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroke:false}
             }
+
             else{
                 attPow = 0;
                 this.def.power = 0;
@@ -52,6 +70,7 @@ class Wizard{
                 return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:0,shieldBroke:true}
             }
         }
+        
         this.health -= attPow;
         if(!this.healthCheck()){
             return {success:false,error:"WIZARD_DEAD"}
@@ -67,8 +86,8 @@ class Wizard{
             return {success:false,error:"INVALID_ATTACK_SPELL"}
         
         let attPow = Math.round(this.power/5 + (randPower(attackspell.maxDamage)))
-        let defPow = defender.def.power;
-        return defender.takeDamage(this,attPow,defPow,attackspell);
+        
+        return defender.takeDamage(this,attPow,attackspell);
     }
 
     heal(spellname){
@@ -94,23 +113,23 @@ class Wizard{
 
     defense(spellname){
         if(!this.healthCheck()){
-            return `${this.name} is Dead`
+            return {success:false,error:"WIZARD_DEAD"}
         }
 
         if(this.def.status === true){
-            return "Shield Already Activated"
+            return {success:false,error:"SHIELD_ALREADY_ACTIVE"}
         }
 
         let defspell =this.spell.find((obj)=>obj.name===spellname)
         if(defspell===undefined)
-            return "INVALID INPUT"
+            return {success:false,error:"SPELL_NOT_FOUND"}
         if(defspell.type !=="defense")
-            return "CHOSE WRONG SPELL TYPE"
+            return {success:false,error:"INVALID_DEFENSE_SPELL"}
 
         let defPow = Math.round(this.power/5 + randPower(defspell.maxShield));
         this.def.status = true;
         this.def.power = defPow;
-        return "Shield Activated"
+        return {success:true,type:"defense",wizard:this.name,spell:defspell.name,shieldPower:defPow}
     }
 
     healthCheck(){
