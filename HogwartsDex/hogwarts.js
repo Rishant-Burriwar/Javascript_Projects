@@ -81,4 +81,58 @@ let startMatch =function(name1,name2){
     }
 }
 
-export {hogwarts,search,getByHouse,stats,startMatch}
+function displayResult(result){
+
+    if(!result.success){
+        console.log(result.error);
+        return;
+    }
+
+    if(result.type === "attack"){
+
+        console.log(
+            `${result.attacker} used ${result.spell}`
+        );
+
+        if(result.damage > 0){
+            console.log(
+                `${result.defender} lost ${result.damage} HP`
+            );
+        }
+
+            if(result.shieldBlocked){
+            console.log(
+                `${result.defender}'s shield blocked the attack`
+            );
+        }
+
+        if(result.shieldBroken){
+            console.log(
+                `${result.defender}'s shield shattered`
+            );
+        }
+
+        if(result.defeated){
+            console.log(
+                `${result.defender} has been defeated`
+            );
+        }
+    }
+
+
+    else if(result.type === "heal"){
+
+        console.log(
+            `${result.wizard} restored ${result.healAmount} HP`
+        );
+    }
+
+    else if(result.type === "defense"){
+
+        console.log(
+            `${result.wizard} activated a shield`
+        );
+    }
+}
+
+export {hogwarts,search,getByHouse,stats,startMatch,displayResult}
