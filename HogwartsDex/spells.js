@@ -1,4 +1,4 @@
-import { hogwarts } from "./hogwarts.js";
+
 
 const validSpells = {
         attack : [
