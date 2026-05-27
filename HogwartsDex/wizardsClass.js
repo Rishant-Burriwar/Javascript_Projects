@@ -1,8 +1,8 @@
 import { spells } from "./spells.js";
 
 
-let randPower = function(range){
-    let power = Math.floor(Math.random()*(range-10) +10);
+let randPower = function(min,max){
+    let power = Math.floor(Math.random()*(max-min +1) +min);
     return power;
 }
 
@@ -13,12 +13,14 @@ class Wizard{
         this.actor = actor;
         this.alive = alive;
         if(this.alive){
-            this.health = 100;
+            this.health = 200;
+            this.mana = 200;
         }
         else{
             this.health = 0;
+            this.mana = 0;
         }
-        this.power = randPower(30);
+        this.power = randPower(90,100);
         this.spell = spells();
         this.def = {
             status:false,
@@ -27,11 +29,17 @@ class Wizard{
     }
 
     chooseAction(defender){
+
+        // if(this.mana <20){
+        //     return {
+        //         action: "rest"
+        //     }
+        // }
+
         if(this.health < 30){
             return {
                 action : "heal",
                 spell : this.spell[1].name,
-                defender : defender
             }
         }
 
@@ -39,7 +47,6 @@ class Wizard{
             return {
                 action :"defense",
                 spell : this.spell[2].name,
-                defender : defender
             }
         }
         else{
@@ -110,7 +117,10 @@ class Wizard{
         if(attackspell.type !=="attack")
             return {success:false,error:"INVALID_ATTACK_SPELL"}
         
-        let attPow = Math.round(this.power/5 + (randPower(attackspell.maxDamage)))
+        if(!this.ConsumeMana(attackspell).success){
+            return {success:false,error:"NOT_ENOUGH_MANA"};
+        }
+        let attPow = Math.round(this.power/5 + (randPower(attackspell.damage.min,attackspell.damage.max)))
         
         return defender.takeDamage(this,attPow,attackspell);
     }
@@ -126,7 +136,10 @@ class Wizard{
         if(healthspell.type !=="health")
             return {success:false,error:"INVALID_HEAL_SPELL"}
 
-        let healPow = Math.round(this.power/5 + (randPower(healthspell.maxHeal)));
+        if(!this.ConsumeMana(healthspell).success){
+            return {success:false,error:"NOT_ENOUGH_MANA"};
+        }
+        let healPow = Math.round(this.power/5 + (randPower(healthspell.heal.min,healthspell.heal.max)));
 
         this.health += healPow
 
@@ -151,7 +164,10 @@ class Wizard{
         if(defspell.type !=="defense")
             return {success:false,error:"INVALID_DEFENSE_SPELL"}
 
-        let defPow = Math.round(this.power/5 + randPower(defspell.maxShield));
+        if(!this.ConsumeMana(defspell).success){
+            return {success:false,error:"NOT_ENOUGH_MANA"};
+        }
+        let defPow = Math.round(this.power/5 + randPower(defspell.shield.min,defspell.shield.max));
         this.def.status = true;
         this.def.power = defPow;
         return {success:true,type:"defense",wizard:this.name,spell:defspell.name,shieldPower:defPow}
@@ -164,6 +180,15 @@ class Wizard{
             return false
         }
         return true
+    }
+
+    ConsumeMana(spell){
+        let manaNeeded =randPower(spell.manaCost.min,spell.manaCost.max);
+        if(manaNeeded > this.mana){
+            return {success:false};
+        }
+        this.mana -= manaNeeded;
+        return {success:true};
     }
 }
 
