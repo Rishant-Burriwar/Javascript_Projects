@@ -1,205 +1,258 @@
-# Hogwarts Duel Simulator 
+# 🪄 HogwartsDex
 
-A terminal-based JavaScript project inspired by the Harry Potter universe.  
-This project fetches wizard data, converts characters into interactive Wizard objects, and simulates magical duels using Object-Oriented Programming principles.
+A Harry Potter inspired battle simulator built with JavaScript.
 
----
-
-# Features 
-
-## Wizard System
-- Converts API/local JSON data into `Wizard` objects
-- Stores:
-  - name
-  - house
-  - actor
-  - alive status
-  - health
-  - power
-  - spells
+This project simulates wizard duels using spells, shields, healing, mana management, and AI-based combat decisions.
 
 ---
 
-## Search System 
-- Search wizards by name
-- Case-insensitive matching
-- Partial search support using `includes()`
+# ⚡ Features
+
+## 🧙 Wizard System
+
+* Load Hogwarts characters from JSON data
+* Search wizards by name
+* Filter wizards by house
+* View Hogwarts statistics
+* Each wizard has:
+
+  * Health
+  * Mana
+  * Power
+  * Spell set
+  * Shield system
+
+---
+
+## ⚔️ Duel System
+
+* 1v1 wizard battles
+* Turn-based combat
+* Randomized damage/heal/shield values
+* Dynamic combat logs
+* Automatic win/loss handling
 
 Example:
 
-```text
-harry
-→ Harry Potter
+```bash
+Harry Potter used sectumsempra
+Ron Weasley lost 37 HP
+Ron Weasley activated a shield
+Harry Potter used incendio
+Ron Weasley's shield shattered
 ```
 
 ---
 
-## House Filtering 
-Filter all wizards by Hogwarts house.
+# 🧠 AI Decision System
+
+Each wizard can automatically decide whether to:
+
+* Attack
+* Heal
+* Defend
+
+Current decision factors:
+
+* Current health
+* Shield status
+* Available mana
+
+This creates semi-intelligent combat behavior instead of fixed actions.
+
+---
+
+# 🔥 Spell System
+
+Spells are divided into:
+
+* Attack spells
+* Heal spells
+* Defense spells
+
+Each spell contains:
+
+* Min/max power
+* Mana cost
+* Spell type
 
 Example:
 
-```text
-Ravenclaw
-→ returns all Ravenclaw wizards
+```js
+{
+    name:"sectumsempra",
+    type:"attack",
+    damage:{min:20,max:35},
+    manaCost:{min:15,max:25}
+}
 ```
 
 ---
 
-## Hogwarts Statistics 
-Displays:
-- total wizards
-- alive wizards
-- dead wizards
+# ⚔️ Current Spell Categories
 
-Example:
+## Attack Spells
 
-```text
-TOTAL: 437
-ALIVE: 307
-DEAD: 130
-```
+* Stupefy
+* Sectumsempra
+* Incendio
+* Confringo
+* Bombarda
+* Bombarda Maxima
+* Diffindo
+* Expulso
+* Reducto
+* Flipendo
+* Depulso
+* Expelliarmus
+* Crucio
+* Avada Kedavra
 
----
+## Heal Spells
 
-# Spell System 🪄
+* Episkey
+* Vulnera Sanentur
+* Rennervate
+* Ferula
+* Brackium Emendo
+* Essence of Dittany
+* Enervate
+* Sanentur
 
-Each wizard receives:
-- 1 attack spell
-- 1 heal spell
-- 1 defense spell
+## Defense Spells
 
-Spells are randomly assigned during wizard creation.
-
----
-
-## Attack Spells 
-
-| Spell | Max Damage |
-|---|---|
-| Stupefy | 20 |
-| Sectumsempra | 35 |
-| Incendio | 25 |
-
----
-
-## Heal Spells 
-
-| Spell | Max Heal |
-|---|---|
-| Episkey | 15 |
-| Vulnera Sanentur | 35 |
-| Rennervate | 20 |
+* Protego
+* Protego Maxima
+* Protego Horribilis
+* Protego Totalum
+* Fianto Duri
+* Salvio Hexia
+* Cave Inimicum
+* Repello Inimicum
+* Finite Incantatem
 
 ---
 
-## Defense Spells 
+# 🛡️ Combat Mechanics
 
-| Spell | Max Shield |
-|---|---|
-| Protego | 15 |
-| Protego Maxima | 35 |
-| Fianto Duri | 25 |
+## Health System
 
----
+* Wizards start with 200 HP
+* Health reaches 0 → wizard dies
 
-# Duel System 
+## Shield System
 
-Implemented:
-- duel initialization
-- attack system
-- attack power calculation
-- health reduction
-- spell validation
-- alive/dead state checking
+* Shields absorb incoming damage
+* Shields can break after heavy attacks
 
-Current attack formula:
+## Mana System
 
-```text
-finalDamage =
-random spell damage
-+
-wizard power bonus
-```
-
-Example:
-
-```javascript
-let attPow = this.power/5 + randPower(spell.maxDamage);
-```
+* Every spell consumes mana
+* Stronger spells consume more mana
+* Mana regeneration supported
 
 ---
 
-# Project Architecture 
+# 📂 Project Structure
 
-```text
+```bash
 HogwartsDex/
 │
 ├── api.js
 ├── data.json
 ├── hogwarts.js
+├── duel.js
 ├── spells.js
-├── wizardClass.js
-└── dex.js
+├── wizardsClass.js
+├── dex.js
+└── README.md
 ```
 
 ---
 
-# Concepts Practiced 
+# 🚀 Future Improvements
 
-This project focuses heavily on:
-- Classes & Objects
-- Arrays & Array Methods
-- API Fetching
-- Async/Await
-- ES Modules
-- Object-Oriented Programming
-- State Mutation
-- Validation
-- Error Handling
-- Randomized Systems
-- Project Architecture
+Planned upgrades:
+
+* Status effects
+
+  * Burn
+  * Poison
+  * Stun
+  * Silence
+
+* Advanced AI
+
+  * Aggressive personalities
+  * Defensive personalities
+  * Mana-aware decisions
+
+* Cooldown system
+
+* Multiplayer battles
+
+* XP & leveling system
+
+* Spell rarity system
+
+* Boss battles
+
+* Tournament mode
 
 ---
 
-# Future Improvements 
+# 🧪 Example Usage
 
-Planned features:
-- interactive menu system
-- turn-based duel loop
-- heal mechanics
-- defense mechanics
-- duel winner system
-- spell cooldowns
-- battle logs
-- save/load system
+```js
+let match = startMatch("harry","ron")
 
----
+while(match[0].alive && match[1].alive){
 
-# Sample Output 
+    let move1 = match[0].chooseAction(match[1]);
+    let result1 = match[0].performAction(
+        move1.action,
+        move1.defender,
+        move1.spell
+    )
 
-```text
-----WELCOME TO HOGWARTS----
-
-Harry Potter used Stupefy
-Hermione Granger lost 18 health points
+    displayResult(result1);
+}
 ```
 
 ---
 
-# Tech Stack 
+# 🛠️ Tech Stack
 
-- JavaScript (Node.js)
-- ES Modules
-- Harry Potter API / Local JSON fallback
+* JavaScript (ES6)
+* Node.js
+* JSON Data Handling
+* Object-Oriented Programming
 
 ---
 
-# Learning Goal 
+# 🎯 Why This Project Matters
 
-The main goal of this project is to move beyond basic syntax and learn how to:
-- structure larger projects
-- model entities using classes
-- manage application state
-- design reusable systems
-- build interactive terminal applications
+This is not just a Harry Potter fan project.
+
+It demonstrates:
+
+* OOP design
+* Game logic engineering
+* AI decision systems
+* State management
+* Backend-style architecture
+* Combat engine design
+
+---
+
+# ▶️ Run The Project
+
+```bash
+node dex.js
+```
+
+---
+
+# 📌 Author
+
+Built by Rishant Burriwar 🚀
