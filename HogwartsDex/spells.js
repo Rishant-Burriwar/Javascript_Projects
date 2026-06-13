@@ -1,21 +1,20 @@
 
-
 const validSpells = {
         attack : [
-    {name:"stupefy",type:"attack",damage:{min:10,max:20},manaCost:{min:10,max:15}},
-    {name:"sectumsempra",type:"attack",damage:{min:20,max:35},manaCost:{min:15,max:25}},
-    {name:"incendio",type:"attack",damage:{min:15,max:25},manaCost:{min:10,max:22}},
-    {name:"confringo",type:"attack",damage:{min:18,max:30},manaCost:{min:14,max:24}},
-    {name:"bombarda",type:"attack",damage:{min:16,max:28},manaCost:{min:13,max:23}},
-    {name:"bombarda maxima",type:"attack",damage:{min:30,max:50},manaCost:{min:28,max:40}},
-    {name:"diffindo",type:"attack",damage:{min:14,max:22},manaCost:{min:10,max:18}},
-    {name:"expulso",type:"attack",damage:{min:25,max:40},manaCost:{min:22,max:34}},
-    {name:"reducto",type:"attack",damage:{min:20,max:33},manaCost:{min:18,max:30}},
-    {name:"flipendo",type:"attack",damage:{min:8,max:18},manaCost:{min:6,max:14}},
-    {name:"depulso",type:"attack",damage:{min:12,max:24},manaCost:{min:10,max:20}},
-    {name:"expelliarmus",type:"attack",damage:{min:10,max:20},manaCost:{min:8,max:16}},
-    {name:"crucio",type:"attack",damage:{min:25,max:38},manaCost:{min:24,max:36}},
-    {name:"avada kedavra",type:"attack",damage:{min:80,max:100},manaCost:{min:50,max:70}}
+    {name:"stupefy",type:"attack",damage:{min:10,max:20},manaCost:{min:10,max:15},cooldown:1},
+    {name:"sectumsempra",type:"attack",damage:{min:20,max:35},manaCost:{min:15,max:25},cooldown:2},
+    {name:"incendio",type:"attack",damage:{min:15,max:25},manaCost:{min:10,max:22},cooldown:1},
+    {name:"confringo",type:"attack",damage:{min:18,max:30},manaCost:{min:14,max:24},cooldown:2},
+    {name:"bombarda",type:"attack",damage:{min:16,max:28},manaCost:{min:13,max:23},cooldown:2},
+    {name:"bombarda maxima",type:"attack",damage:{min:30,max:50},manaCost:{min:28,max:40},cooldown:4},
+    {name:"diffindo",type:"attack",damage:{min:14,max:22},manaCost:{min:10,max:18},cooldown:1},
+    {name:"expulso",type:"attack",damage:{min:25,max:40},manaCost:{min:22,max:34},cooldown:3},
+    {name:"reducto",type:"attack",damage:{min:20,max:33},manaCost:{min:18,max:30},cooldown:2},
+    {name:"flipendo",type:"attack",damage:{min:8,max:18},manaCost:{min:6,max:14},cooldown:0},
+    {name:"depulso",type:"attack",damage:{min:12,max:24},manaCost:{min:10,max:20},cooldown:1},
+    {name:"expelliarmus",type:"attack",damage:{min:10,max:20},manaCost:{min:8,max:16},cooldown:1},
+    {name:"crucio",type:"attack",damage:{min:25,max:38},manaCost:{min:24,max:36},cooldown:4},
+    {name:"avada kedavra",type:"attack",damage:{min:80,max:100},manaCost:{min:50,max:70},cooldown:6}
 ],
 
 heal : [
@@ -57,4 +56,4 @@ let onlySpellName = function(wizobj){
     return spellNames;
 }
 
-export{spells,onlySpellName};
+export{spells,onlySpellName,validSpells};

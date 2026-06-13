@@ -1,4 +1,4 @@
-import { spells } from "./spells.js";
+import { spells,validSpells } from "./spells.js";
 
 
 let randPower = function(min,max){
@@ -49,6 +49,7 @@ class Wizard{
             survival : randPower(10,20),
             caution : randPower(10,20)
         }
+        this.cooldownSpell = {}
     }
     
     compareActionWeights(defender){
@@ -118,6 +119,62 @@ class Wizard{
 
     return weightedChoice(scores);
 }
+
+    cooldownDecrement(){
+        for(let spellname in this.cooldownSpell){
+            this.cooldownSpell[spellname]--;
+        }
+    }
+
+    chooseBestDefenseSpell(defender){
+        let bestSpell =null;
+        let bestscore = -Infinity;
+        for(let spellObj of validSpells.defense){
+            let score = 0;
+            if(this.cooldownSpell[spellObj.name] === 0){
+                if(this.mana < 40){
+                    score -= spellObj.manaCost.max*2;
+                }
+                if(defender.def.status){
+                score += spellObj.damage.max*0.7;
+                }
+                if(spellObj.damage.max >= defender.health && defender.health <30){
+                    score += 10;
+                }
+                if(score > bestscore){
+                    bestscore = score;
+                    bestSpell = spellObj;
+                }
+            }
+        }
+       
+        return bestSpell;
+    }
+
+    chooseBestAttackSpell(defender){
+        let bestSpell =null;
+        let bestscore = -Infinity;
+        for(let spellObj of validSpells.attack){
+            let score = 0;
+            if(this.cooldownSpell[spellObj.name] === 0 || this.cooldownSpell[spellObj.name] === undefined){
+                if(this.mana < 40){
+                    score -= spellObj.manaCost.max*2;
+                }
+                if(defender.def.status){
+                score += spellObj.damage.max*0.7;
+                }
+                if(spellObj.damage.max >= defender.health && defender.health <30){
+                    score += 10;
+                }
+                if(score > bestscore){
+                    bestscore = score;
+                    bestSpell = spellObj;
+                }
+        }
+    }
+        this.cooldownSpell[bestSpell.name] = bestSpell.cooldown;
+        return bestSpell;
+    }
 
     chooseAction(defender){
         let action = this.compareActionWeights(defender);
@@ -191,27 +248,23 @@ class Wizard{
     }
 
     rest(){
-        let addMana = (this.power/10)*(this.health/10);
+        let addMana = (this.power/10)*(this.health/10) + this.personality.survival*0.8;
         this.mana += addMana;
         return {success:true,type :"rest",currentMana : this.mana}; 
     }
 
     attack(spellname,defender){
-        let attackspell =this.spell.find((obj)=>obj.name===spellname)
-        if(attackspell===undefined)
-            return {success:false,error:"SPELL_NOT_FOUND"}
-        if(attackspell.type !=="attack")
-            return {success:false,error:"INVALID_ATTACK_SPELL"}
-        
+        this.cooldownDecrement();
+        let attackspell =this.chooseBestAttackSpell(defender);
         if(!this.ConsumeMana(attackspell).success){
             return {success:false,error:"NOT_ENOUGH_MANA"};
         }
         let attPow = Math.round(this.power/20 + (randPower(attackspell.damage.min,attackspell.damage.max)))
-        
         return defender.takeDamage(this,attPow,attackspell);
     }
 
     heal(spellname){
+        this.cooldownDecrement();
         if(!this.healthCheck()){
             return {success:false,error:"WIZARD_DEAD"}
         }
@@ -236,6 +289,7 @@ class Wizard{
     }
 
     defense(spellname){
+        this.cooldownDecrement();
         if(!this.healthCheck()){
             return {success:false,error:"WIZARD_DEAD"}
         }
