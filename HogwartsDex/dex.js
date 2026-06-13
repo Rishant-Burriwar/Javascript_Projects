@@ -46,12 +46,14 @@ while(x[0].alive && x[1].alive){
     let move1 = x[0].chooseAction(x[1]);
     let result1 = x[0].performAction(move1.action,move1.defender,move1.spell)
     displayResult(result1);
+    x[0].cooldownDecrement();
     if(!x[1].alive){
         break;
     }
     let move2 = x[1].chooseAction(x[0]);
     let result2 = x[1].performAction(move2.action,move2.defender,move2.spell)
     displayResult(result2);
+    x[1].cooldownDecrement();
 }
 
     }

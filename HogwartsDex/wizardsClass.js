@@ -61,23 +61,34 @@ class Wizard{
         rest : 0
     };
 
-    scores.heal += (100 - this.health) * 0.7;
+    scores.heal += (200 - this.health) * 0.7;
     if(this.health < 30){
         scores.heal += 25;
+        scores.attack -= 20;
         scores.defense += 5;
     }
 
-    if(this.health > 70){
+    if(this.health > 120){
+        scores.heal -= 25;
+        scores.defense -= 15;
         scores.attack += 20;
     }
 
-    scores.attack += (100 - defender.health) * 0.25;
+    if(this.health > 70){
+        scores.heal -= 25;
+        scores.attack += 20;
+    }
+
+    scores.attack += (200 - defender.health) * 0.25;
 
     if(defender.health < 25){
+        scores.heal -= 10;
+        scores.defense -= 10;
         scores.attack += 25;
     }
 
     if(this.health > defender.health){
+        scores.defense -= 5;
         scores.attack += 15;
     }
 
@@ -122,7 +133,8 @@ class Wizard{
 
     cooldownDecrement(){
         for(let spellname in this.cooldownSpell){
-            this.cooldownSpell[spellname]--;
+            if(this.cooldownSpell[spellname]>0)
+                this.cooldownSpell[spellname]--;
         }
     }
 
@@ -136,9 +148,9 @@ class Wizard{
                     score -= spellObj.manaCost.max*2;
                 }
                 if(defender.def.status){
-                score += spellObj.damage.max*0.7;
+                score += spellObj.shield.max*0.7;
                 }
-                if(spellObj.damage.max >= defender.health && defender.health <30){
+                if(spellObj.shield.max >= defender.health && defender.health <30){
                     score += 10;
                 }
                 if(score > bestscore){
@@ -220,7 +232,7 @@ class Wizard{
                 this.def.status =false;
                 this.health -= attPow;
                 if(!this.healthCheck()){
-                    return {success:false,error:"WIZARD_DEAD"}
+                    return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,defeated:true}
                 }
                 return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,shieldBroken:true}
             }
@@ -242,7 +254,7 @@ class Wizard{
         
         this.health -= attPow;
         if(!this.healthCheck()){
-            return {success:false,error:"WIZARD_DEAD"}
+            return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow,defeated:true}
         }
         return {success:true,type:"attack",attacker:attacker.name,defender:this.name,spell:attackspell.name,damage:attPow}
     }
@@ -282,8 +294,8 @@ class Wizard{
 
         this.health += healPow
 
-        if(this.health >100)
-            this.health = 100;
+        if(this.health >200)
+            this.health = 200;
 
         return {success:true,type:"heal",wizard:this.name,spell:healthspell.name,healAmount:healPow,currentHealth:this.health}
     }
